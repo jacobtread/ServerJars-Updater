@@ -2,3 +2,6 @@
 
 # ServerJars-Updater
 An automatic updater for serverjars 
+
+
+### THIS WONT RUN ON JAVA VERSIONS ABOVE 8

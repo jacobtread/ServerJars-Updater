@@ -151,7 +151,7 @@ public class Updater {
                 sysMethod.setAccessible(true);
                 sysMethod.invoke(sysLoader, jar.toURI().toURL());
                 if (getJavaVersion() > 8) {
-                    System.err.println("[WARNING] Java has warned you that you are using a workaround if you want to get\naround this you can add the following arguments: '-Djava.system.class.loader=com.serverjars.updater.ServerJarsLoader'\ne.g 'java -Djava.system.class.loader=com.serverjars.updater.ServerJarsLoader -jar Updater-2.0.jar'");
+                    System.err.println("[WARNING] Java has warned you that you are using a workaround if you want to get\naround this you can add the following arguments: '-Djava.system.class.loader=com.serverjars.updater.ServerJarsLoader'\ne.g 'java -Djava.system.class.loader=com.serverjars.updater.ServerJarsLoader -jar Updater.jar'");
                 }
                 return sysLoader;
             }

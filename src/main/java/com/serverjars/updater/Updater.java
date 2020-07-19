@@ -14,6 +14,9 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -35,10 +38,7 @@ public class Updater {
     private static String version;
 
     public static void main(String[] args) {
-        if (getJavaVersion() > 8) {
-            err(center("SORRY ServerJars Updater will not run on java version") + "\n" + center("higher than java 8"));
-            return;
-        }
+        System.setProperty("java.system.class.loader", "com.serverjars.updater.DynamicClassLoader");
         System.out.println(BREAK + "\n       _____                               __               \n" +
                 "      / ___/___  ______   _____  _____    / /___ ___________\n" +
                 "      \\__ \\/ _ \\/ ___/ | / / _ \\/ ___/_  / / __ `/ ___/ ___/\n" +
@@ -138,10 +138,34 @@ public class Updater {
         }
     }
 
-    private static Method getMainMethod(final File jar, final String mainClass) {
-        Agent.addToClassPath(jar);
+    private static ClassLoader addClasspath(File jar) {
         try {
-            final Class<?> cls = Class.forName(mainClass, true, ClassLoader.getSystemClassLoader());
+            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            if (classLoader instanceof ServerJarsLoader) {
+                ServerJarsLoader loader = (ServerJarsLoader) classLoader;
+                loader.add(jar.toURI().toURL());
+                return loader;
+            } else {
+                URLClassLoader sysLoader = new URLClassLoader(new URL[0]);
+                Method sysMethod = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+                sysMethod.setAccessible(true);
+                sysMethod.invoke(sysLoader, jar.toURI().toURL());
+                if (getJavaVersion() > 8) {
+                    System.err.println("[WARNING] Java has warned you that you are using a workaround if you want to get\naround this you can add the following arguments: '-Djava.system.class.loader=com.serverjars.updater.ServerJarsLoader'\ne.g 'java -Djava.system.class.loader=com.serverjars.updater.ServerJarsLoader -jar Updater-2.0.jar'");
+                }
+                return sysLoader;
+            }
+        } catch (final MalformedURLException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            System.err.println("Unable to add the Jar to System ClassLoader");
+            e.printStackTrace();
+            System.exit(1);
+            throw new InternalError();
+        }
+    }
+
+    private static Method getMainMethod(final File jar, final String mainClass) {
+        try {
+            final Class<?> cls = Class.forName(mainClass, true, addClasspath(jar));
             return cls.getMethod("main", String[].class);
         } catch (final NoSuchMethodException | ClassNotFoundException e) {
             System.err.println("Failed to find main method in patched jar");
@@ -149,6 +173,7 @@ public class Updater {
             System.exit(1);
             throw new InternalError();
         }
+
     }
 
     private static boolean downloadJar(File jarFile) {

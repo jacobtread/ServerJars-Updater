@@ -44,8 +44,7 @@ public class Updater {
                 "      \\__ \\/ _ \\/ ___/ | / / _ \\/ ___/_  / / __ `/ ___/ ___/\n" +
                 "     ___/ /  __/ /   | |/ /  __/ /  / /_/ / /_/ / /  (__  ) \n" +
                 "    /____/\\___/_/    |___/\\___/_/   \\____/\\__,_/_/  /____/  \n" +
-                center("ServerJars.com      Made with love by Songoda <3") + "\n\n" +
-                center("* New Updater By Jacobtread *") + "\n" + BREAK);
+                center("ServerJars.com      Made with love by Songoda <3") + "\n" + BREAK);
         File propertyFile = new File("serverjars.properties");
         if (!propertyFile.exists()) {
             System.out.println(
@@ -112,10 +111,10 @@ public class Updater {
     }
 
     private static void start(File jarFile, String[] args) {
+        System.gc();
         System.out.println(BREAK + "\n" + center(String.format("Starting '%s' version '%s'", type, version)) + "\n" + BREAK);
         final String main = getMainClass(jarFile);
         Method mainMethod = getMainMethod(jarFile, main);
-
         try {
             mainMethod.invoke(null, new Object[]{args});
         } catch (final IllegalAccessException | InvocationTargetException e) {

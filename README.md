@@ -17,3 +17,4 @@ e.g
 ```
 java -Djava.system.class.loader=com.serverjars.updater.ServerJarsLoader -jar Updater-2.1.jar
 ```
+![Updater](https://cdn.discordapp.com/attachments/592847823796437023/734384246528933938/unknown.png)

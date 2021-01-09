@@ -3,6 +3,10 @@
 # ServerJars-Updater
 An automatic updater for serverjars 
 
+# Important Notice
+Any Issues will be ignored. The Songoda company screwed me over and I will no longer be writing code for them however I will leave this code up for anyone who wishes to modify it. 
+
+
 You are looking at our brand new Automatic Updater which you can run like any normal jar on our website. However when there is a new version available either on the version you predefine or latest it will automaticly update your server to that version on each restart. The jar is ran in place of your usual jar, just make sure to configure the wanted version and jar type correctly though the serverjars.properties which is automatically created when you first run the jar. 
 
 The newest version now supports java versions above 8 

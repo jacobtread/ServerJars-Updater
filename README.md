@@ -3,6 +3,9 @@
 # ServerJars-Updater
 An automatic updater for serverjars 
 
+# New And Improved
+Check out https://github.com/jacobtread/ServerUpdater for a new and improved version
+
 # Important Notice
 Any Issues will be ignored. The Songoda company screwed me over and I will no longer be writing code for them however I will leave this code up for anyone who wishes to modify it. 
 
